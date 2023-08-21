@@ -17,7 +17,7 @@ class Player extends AcGameObject {
         this.is_me = is_me;
         this.eps = 0.1;
         this.friction = 0.9;
-
+        this.spend_time = 0;
         this.cur_skill = null;
     }
     start() {
@@ -75,6 +75,19 @@ class Player extends AcGameObject {
         this.vy = Math.sin(angle);
     }
     is_attacked(angle, damage) {
+
+        for(let i = 0; i < 20 + Math.random() * 5;i++) {
+            let x = this.x;
+            let y = this.y;
+            let radius = this.radius * Math.random() * 0.1;
+            let angle = Math.PI * 2 * Math.random() * 0.1;
+            let vx = Math.cos(angle),vy = Math.sin(angle);
+            let color = this.color;
+            let speed = this.speed * 10; // let 
+            let move_length = this.radius * Math.random() * 6;
+            new Particle(this.playground,x,y,radius,vx,vy,color,speed,move_length);
+        }
+
         this.radius -= damage;
         if(this.radius < 10) {
             this.destory();
@@ -82,22 +95,16 @@ class Player extends AcGameObject {
         }
         this.damage_x = Math.cos(angle);
         this.damage_y = Math.sin(angle);
-        this.damage_speed = damage * 76;
-        this.speed *= 0.7;
-
-        for(let i = 0; i < 10 + Math.random() * 5;i++) {
-            let x = this.x;
-            let y = this.y;
-            let radius = this.radius * Math.random() * 0.1;
-            let angle = Math.PI * 2 * Math.random();
-            let vx = Math.cos(angle),vy = Math.sin(angle);
-            let color = this.color;
-            this.speed = this.speed * 1;
-            new Particle(this.playground,x,y,radius,vx,vy,color,this.speed);
-        }
-
+        this.damage_speed = damage * 100;
+        this.speed *= 1.25;
     } 
     update() {
+        this.spend_time += this.timedelta / 1000;
+        if(this.spend_time > 5 && Math.random() < 1 / 300.0) {
+            let player = this.playground.players[Math.floor(Math.random() * this.playground.players.length)];
+
+            this.shoot_fireball(player.x, player.y);
+        }
         if(this.damage_speed > this.eps) {
             this.vx = this.vy = 0;
             this.move_length = 0;
