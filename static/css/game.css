@@ -13,8 +13,8 @@
 }
 .ac-game-menu-field-item  {
     color: white;
-    height: 6vh;
-    width: 18vw;
+    height: 7%;
+    width: 60%;
     font-size: 4vh;
     font-style: italic;
     text-align: center;
@@ -27,6 +27,7 @@
 .ac-game-menu-field-item:hover{
     transform:scale(1.2);
     transition: 100ms;
+    padding: 2vh;
 
 }
 .ac-game-playground {
